@@ -21,7 +21,7 @@ The process consists of just four parts:
 See the android developer site for more info: https://developer.android.com/ndk/guides/standalone_toolchain.html
 3) Export your toolchain's location:
 ```
-export TOOLCHAIN=/path/to/standalone/toolchain
+export TOOLCHAIN=$HOME/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64
 ```
 
 4) Run the build script:

@@ -28,9 +28,10 @@ cd dropbear-$VERSION
 echo "Generating required files..."
 
 HOST=arm-linux-androideabi
-COMPILER=${TOOLCHAIN}/bin/arm-linux-androideabi-gcc
-STRIP=${TOOLCHAIN}/bin/arm-linux-androideabi-strip
+COMPILER=${TOOLCHAIN}/bin/armv7a-linux-androideabi24-clang
+STRIP=${TOOLCHAIN}/bin/llvm-strip
 SYSROOT=${TOOLCHAIN}/sysroot
+CONFIG_OPTIONS="--host=${HOST} --disable-utmp --disable-wtmp --disable-utmpx --disable-zlib --disable-syslog --disable-lastlog --disable-shadow --disable-pam --enable-bundled-libtom"
 
 export CC="$COMPILER --sysroot=$SYSROOT"
 
@@ -43,7 +44,7 @@ unset GOOGLE_PLATFORM
 # Apply the new config.guess and config.sub now so they're not patched
 cp ../config.guess ../config.sub .
     
-./configure --host=$HOST --disable-utmp --disable-wtmp --disable-utmpx --disable-zlib --disable-syslog > /dev/null 2>&1
+./configure ${CONFIG_OPTIONS} > /dev/null 2>&1
 
 echo "Done generating files"
 sleep 2
@@ -61,12 +62,11 @@ echo "Compiling for ARM"
 
 cd dropbear-$VERSION
     
-./configure --host=$HOST --disable-utmp --disable-wtmp --disable-utmpx --disable-zlib --disable-syslog
+./configure ${CONFIG_OPTIONS}
 
 make PROGRAMS="$PROGRAMS"
 MAKE_SUCCESS=$?
 if [ $MAKE_SUCCESS -eq 0 ]; then
-	clear
 	sleep 1
   	# Create the output directory
 	mkdir -p $TARGET/arm;
